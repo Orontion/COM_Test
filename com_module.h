@@ -6,6 +6,8 @@ class COM_Module
 {
 public:
     COM_Module();
+
+
 };
 
 #endif // COM_MODULE_H
