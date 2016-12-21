@@ -20,8 +20,9 @@ QList <QString> COM_Module::Available_Ports()
     //Цикл перебора всех имеющихся портов (фактически, for each, еще одна фишка С++11)
     for (const QSerialPortInfo &info : PortInfos)
     {
-        QString Temp_S = info.portName() + "\n"
-                         + info.description() + "\n";
+        QString Temp_S = info.portName();
+                         //+ info.systemLocation() + "\n"
+                         //+ info.description() + "\n";
 
         PortInfos_List << Temp_S;
     }
@@ -30,9 +31,40 @@ QList <QString> COM_Module::Available_Ports()
 }
 
 
-
 //Процедура подсчета количества COM-портов в системе
 int COM_Module::Ports_Count()
 {
     return QSerialPortInfo::availablePorts().count();
+}
+
+//Функция выбора порта (пока не защищена от ввода неверного имени порта)
+void COM_Module::Choose_Port(QString Port_Name)
+{
+    Chosen_Port = Port_Name;
+}
+
+//Функция подключения к выбранному COM-порту (настройки подключения взяты стандартынми для DES-3526)
+QString COM_Module::Connect_to_Chosen_Port()
+{
+    //Создаем новый объект
+    //COM_Port = new QSerialPort(this);
+
+    //Задаем настройки COM-порта
+    COM_Port.setPortName(Chosen_Port);
+    COM_Port.setBaudRate(9600);
+    COM_Port.setDataBits(QSerialPort::Data8);
+    COM_Port.setParity(QSerialPort::NoParity);
+    COM_Port.setStopBits(QSerialPort::OneStop);
+    COM_Port.setFlowControl(QSerialPort::NoFlowControl);
+
+    //Пробуем открыть порт
+    if (COM_Port.open(QIODevice::ReadWrite))
+    {
+        return "Opened successefully";
+    }
+    else
+    {
+        return COM_Port.errorString();
+    }
+
 }

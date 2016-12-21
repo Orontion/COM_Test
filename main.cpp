@@ -39,6 +39,13 @@ int main(int argc, char *argv[])
         {
             qtout << Temp_String + "\n\n";
         }
+
+        //Выбираем первый порт
+        TestObj.Choose_Port(Test_List[0]);
+
+        //Подключаемся к первому порту и сразу выводим результат
+        qtout << TestObj.Connect_to_Chosen_Port();
+
     }
 
     //Не забываем показать изменения в самой командной строке
