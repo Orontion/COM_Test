@@ -11,6 +11,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    //Флаг остановки бесконечного цикла
+    bool Stop_Cycle = true;
+
     //Собственно, модуль для тестов
     COM_Module TestObj;
 
@@ -50,6 +53,20 @@ int main(int argc, char *argv[])
 
     //Не забываем показать изменения в самой командной строке
     qtout.flush();
+
+    while (Stop_Cycle) {
+
+        if (TestObj.COM_Port.waitForReadyRead(5000))
+        {
+            qtout << TestObj.Read_Port();
+        }
+        else
+        {
+            qtout << "Nothing to read";
+        }
+
+        qtout.flush();
+    }
 
     return a.exec();
 }

@@ -55,7 +55,7 @@ QString COM_Module::Connect_to_Chosen_Port()
     COM_Port.setDataBits(QSerialPort::Data8);
     COM_Port.setParity(QSerialPort::NoParity);
     COM_Port.setStopBits(QSerialPort::OneStop);
-    COM_Port.setFlowControl(QSerialPort::NoFlowControl);
+    COM_Port.setFlowControl(QSerialPort::SoftwareControl);
 
     //Пробуем открыть порт
     if (COM_Port.open(QIODevice::ReadWrite))
@@ -67,4 +67,12 @@ QString COM_Module::Connect_to_Chosen_Port()
         return COM_Port.errorString();
     }
 
+}
+
+//Функция чтения данных
+QByteArray COM_Module::Read_Port()
+{
+    QByteArray Temp_Array;
+    Temp_Array.append(COM_Port.readAll());
+    return Temp_Array;
 }
