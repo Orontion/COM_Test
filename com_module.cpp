@@ -69,10 +69,25 @@ QString COM_Module::Connect_to_Chosen_Port()
 
 }
 
-//Функция чтения данных
+//Функция чтения данных, тип - QByteArray
 QByteArray COM_Module::Read_Port()
 {
-    QByteArray Temp_Array;
-    Temp_Array.append(COM_Port.readAll());
+
+    //Временная переменная для записи данных из буфера COM-порта
+    QByteArray Temp_Array = NULL;
+
+    //В течение секунды проверяем, есть ли что в порту для чтения
+    //if (COM_Port.waitForReadyRead(0))
+    //{
+        //Если есть - так и пишем
+        Temp_Array.append(COM_Port.readAll());
+    //}
+    //else
+    //{
+        //Если нет - выводим инфу об этом. Возможно, стоит сделать стандартный флаг об отсутствии информации.
+        //Temp_Array.append("No data for read");
+    //}
+
+    //Выводим это в качестве значения функции
     return Temp_Array;
 }
