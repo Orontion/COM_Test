@@ -57,11 +57,16 @@ int main(int argc, char *argv[])
     //Бесконечный (пока что) цикл для чтения данных из COM-порта
     while (Stop_Cycle) {
 
-        //Собственно, читаем содержимое буфера функцией из объекта
-        qtout << TestObj.Read_Port();
+        //Если есть, что прочесть - выводим результат в консоль
+        if (TestObj.waitForReadyRead(0))
+        {
+            //Собственно, читаем содержимое буфера функцией из объекта
+            qtout << TestObj.readAll();
 
-        //Выводим в консоль
-        qtout.flush();
+            //Выводим в консоль
+            qtout.flush();
+        }
+
     }
 
     return a.exec();

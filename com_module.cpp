@@ -1,12 +1,17 @@
 //Тут нужно подключать только заголовочный файл модуля
 #include "com_module.h"
 
+/*=================================
+
+Отдельный конструктор класса становится ненужен, т.к. используется наследованный конструктор
 
 //Конструктор класса
 COM_Module::COM_Module()
 {
 
 }
+
+==================================*/
 
 //Функция осмотра доступных портов
 QList <QString> COM_Module::Available_Ports()
@@ -46,28 +51,30 @@ void COM_Module::Choose_Port(QString Port_Name)
 //Функция подключения к выбранному COM-порту (настройки подключения взяты стандартынми для DES-3526)
 QString COM_Module::Connect_to_Chosen_Port()
 {
-    //Создаем новый объект
-    //COM_Port = new QSerialPort(this);
 
     //Задаем настройки COM-порта
-    COM_Port.setPortName(Chosen_Port);
-    COM_Port.setBaudRate(9600);
-    COM_Port.setDataBits(QSerialPort::Data8);
-    COM_Port.setParity(QSerialPort::NoParity);
-    COM_Port.setStopBits(QSerialPort::OneStop);
-    COM_Port.setFlowControl(QSerialPort::SoftwareControl);
+    this->setPortName(Chosen_Port);
+    this->setBaudRate(9600);
+    this->setDataBits(QSerialPort::Data8);
+    this->setParity(QSerialPort::NoParity);
+    this->setStopBits(QSerialPort::OneStop);
+    this->setFlowControl(QSerialPort::SoftwareControl);
 
     //Пробуем открыть порт
-    if (COM_Port.open(QIODevice::ReadWrite))
+    if (this->open(QIODevice::ReadWrite))
     {
         return "Opened successefully";
     }
     else
     {
-        return COM_Port.errorString();
+        return this->errorString();
     }
 
 }
+
+/*=================================
+
+Т.к. мы наследуем объект, то отдельная функция чтения порта становится ненужной
 
 //Функция чтения данных, тип - QByteArray
 QByteArray COM_Module::Read_Port()
@@ -78,16 +85,13 @@ QByteArray COM_Module::Read_Port()
 
     //В течение секунды проверяем, есть ли что в порту для чтения
     //if (COM_Port.waitForReadyRead(0))
-    //{
+    {
         //Если есть - так и пишем
         Temp_Array.append(COM_Port.readAll());
-    //}
-    //else
-    //{
-        //Если нет - выводим инфу об этом. Возможно, стоит сделать стандартный флаг об отсутствии информации.
-        //Temp_Array.append("No data for read");
-    //}
+    }
 
-    //Выводим это в качестве значения функции
+    //Выводим результат в качестве значения функции
     return Temp_Array;
 }
+
+==================================*/
